@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  node:
+    build: 
+      context: ./employee-backend
+      dockerfile: Dockerfile
+    container_name: risksmart-employee-backend
+    ports:
+      - '4000:4000'
+    depends_on:
+      - db
+
+  react:
+    build: 
+      context: ./employee-frontend
+      dockerfile: Dockerfile
+    container_name: risksmart-employee-frontend
+    ports:
+      - '3000:3000'
+    stdin_open: true
+
+  db:
+    image: mysql:8.0
+    container_name: risksmart-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: employeeDB
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
+    ports:
+      - '3306:3306'
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data: {}
